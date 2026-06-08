@@ -1,0 +1,105 @@
+{
+  "name": "Audit Workflow Error Handler",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        32,
+        -96
+      ],
+      "id": "8ac0e589-a68e-4a7f-a165-5158561116eb",
+      "name": "Error Trigger"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=A workflow error has occurred. Analyse it and provide a fix.\n\nWorkflow name: {{ $json.workflow.name }}\nFailed node: {{ $json.execution.lastNodeExecuted }}\nError message: {{ $json.execution.error.message }}\nExecution ID: {{ $json.execution.id }}\nTime of failure: {{ $now }}",
+        "options": {
+          "systemMessage": "You are an n8n workflow error analyst for Dennis Paul and Associates, \na Nairobi audit firm. When given details of a workflow error, you:\n\n1. Explain what went wrong in simple, clear language\n2. Identify the likely cause of the error\n3. Suggest specific steps to fix it\n4. Rate the urgency: Low, Medium, or High\n\nKeep your response concise and actionable. \nNo technical jargon. Write as if explaining to a business owner."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        240,
+        -96
+      ],
+      "id": "7faee9e9-9826-45c7-9027-ed48208a794f",
+      "name": "Error Analyst Agent"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        256,
+        112
+      ],
+      "id": "cbc9fb32-85a7-4f95-a6f2-fcc1ae896f80",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": "magistral-medium-latest",
+        "options": {
+          "maxTokens": 1000,
+          "temperature": 0.3,
+          "maxRetries": 2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        112,
+        112
+      ],
+      "id": "8ae3c82e-47f1-4586-b4e8-3ae4dd2059d0",
+      "name": "Mistral Cloud Chat Model",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "ksPhcveX7Gx8GEg3",
+          "name": "Dennis Paul-Mistral Cloud account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Error Analyst Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Error Analyst Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "361f75dd-6b84-43c5-83f4-e82e284697bc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "e6aec7a014522325198a3f1924d28c54c992a9daf9e1b6ca43309b83c4ed47f6"
+  },
+  "id": "mKQRDuFsgw72Dt0l",
+  "tags": []
+}
