@@ -14,8 +14,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -4848,
-        896
+        -5040,
+        1056
       ],
       "id": "8bee3427-5cc8-40d0-8b44-a41ba532d10b",
       "name": "Schedule Trigger"
@@ -39,8 +39,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -4624,
-        896
+        -4816,
+        1056
       ],
       "id": "ed83ca2e-8a51-45c9-b238-c25289e11044",
       "name": "Get row(s) in sheet",
@@ -87,8 +87,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -4176,
-        896
+        -4368,
+        1056
       ],
       "id": "b3bf57dd-25a4-44fd-be70-c40a6d78cc7f",
       "name": "Calculate Days Overdue"
@@ -105,8 +105,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        -3488,
-        1280
+        -3696,
+        1472
       ],
       "id": "19505cd0-cefd-49f1-b3e4-c3fde9479822",
       "name": "Mistral Cloud Chat Model",
@@ -125,7 +125,7 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.4,
       "position": [
-        -3104,
+        -3440,
         656
       ],
       "id": "97386721-dade-4f96-bd87-a26f20d0a327",
@@ -139,8 +139,8 @@
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
       "typeVersion": 1.3,
       "position": [
-        -3120,
-        1264
+        -3312,
+        1472
       ],
       "id": "68d974f4-5e85-4b18-9373-fe53d6ecc9c2",
       "name": "Structured Output Parser"
@@ -231,8 +231,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.4,
       "position": [
-        -3728,
-        512
+        -4048,
+        704
       ],
       "id": "cacd9cd8-6f6f-4ced-a7c8-671f2709eb92",
       "name": "Route by Risk Level"
@@ -244,8 +244,8 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -4464,
-        896
+        -4592,
+        1056
       ],
       "id": "c0ff0dc1-a47b-4061-be76-c2ac45e020ca",
       "name": "Pre-process Rows"
@@ -258,8 +258,8 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -3952,
-        896
+        -4144,
+        1056
       ],
       "id": "c08808a6-c16d-4c98-bfc9-bf7fdfadfd68",
       "name": "Row Iterator"
@@ -291,8 +291,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -3728,
-        864
+        -3920,
+        1056
       ],
       "id": "4300c206-7a82-4a56-962f-db808a74eff5",
       "name": "Is Overdue?"
@@ -310,8 +310,8 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -3408,
-        1040
+        -3600,
+        1248
       ],
       "id": "7f337f29-44b2-42d2-b3bd-0d5736f6c7d1",
       "name": "Classifier Agent",
@@ -326,8 +326,8 @@
       "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
       "typeVersion": 1.4,
       "position": [
-        -3248,
-        1264
+        -3440,
+        1472
       ],
       "id": "6bdf1c80-6ee0-4467-8e23-dfc8f410f6d2",
       "name": "Simple Memory1"
@@ -335,16 +335,17 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Write a {{ $('Classifier Agent').item.json.output.risk_level }} \nrisk reminder email for client \n{{ $('Classifier Agent').item.json.output.client }} \nregarding their overdue document: \n{{ $('Classifier Agent').item.json.output.document }}. \nIt is {{ $('Classifier Agent').item.json.output.days_pending }} \ndays overdue. \nRecommended action: \n{{ $('Classifier Agent').item.json.output.recommended_action }}.",
+        "text": "=Write a {{ $('Classifier Agent').item.json.output.risk_level }} \nrisk reminder email for client \n{{ $('Classifier Agent').item.json.output.client }} \nregarding their overdue document: \n{{ $('Classifier Agent').item.json.output.document }}. \nIt is {{ $('Classifier Agent').item.json.output.days_pending }} \ndays overdue. \nRecommended action: \n{{ $('Classifier Agent').item.json.output.recommended_action }}.Write the email as continuous flowing paragraphs. Do not add a line break after every word or phrase.",
+        "hasOutputParser": true,
         "needsFallback": true,
         "options": {
-          "systemMessage": "You are an email writing assistant for Dennis Paul and Associates, \na Nairobi audit firm. Write professional client reminder emails. \nAdjust tone by risk level: Low = friendly and brief, Medium = firm \nand urgent, High = formal escalation requiring immediate action. \nAlways close with: Warm regards, Dennis Paul and Associates, \nNairobi, Kenya. Return ONLY the email body text. No subject line. \nNo JSON. No markdown."
+          "systemMessage": "You are an email writing assistant for Dennis Paul and Associates, \na Nairobi audit firm. Write professional client reminder emails. \nAdjust tone by risk level: Low = friendly and brief, Medium = firm \nand urgent, High = formal escalation requiring immediate action. \nAlways close with: Warm regards, Dennis Paul and Associates, \nNairobi, Kenya.Return only a JSON object with two fields: subject and body. The body must be written as continuous flowing prose with no line breaks."
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 3.1,
       "position": [
-        -3296,
+        -3600,
         432
       ],
       "id": "9691a739-8774-4e3d-9bf9-b30c2c667b96",
@@ -378,8 +379,8 @@
       "type": "n8n-nodes-base.if",
       "typeVersion": 2.3,
       "position": [
-        -2304,
-        544
+        -2496,
+        640
       ],
       "id": "7c7b1267-a85c-4ff8-b9f4-49fe5adfea3d",
       "name": "Approved?"
@@ -388,14 +389,14 @@
       "parameters": {
         "sendTo": "={{ $('Get row(s) in sheet').item.json['Client Email'] }}",
         "subject": "={{ $('Classifier Agent').item.json.output.risk_level }} Risk: Audit Document Reminder — {{ $('Classifier Agent').item.json.output.document }}",
-        "message": "={{ $('Email Drafter Agent1').item.json.output }}",
+        "message": "={{ $('Email Drafter Agent1').item.json.output.properties.body.description }}",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -1984,
-        544
+        -2272,
+        640
       ],
       "id": "fd6b3126-eb43-402e-8a7a-7482fc51c54b",
       "name": "Send Client Email",
@@ -412,14 +413,14 @@
         "operation": "sendAndWait",
         "sendTo": "leilahkokoyo@gmail.com",
         "subject": "=Approval Needed: {{ $('Route by Risk Level').item.json.output.risk_level }} Risk — {{ $('Route by Risk Level').item.json.output.client }}",
-        "message": "=APPROVAL REQUIRED — Audit Email Review\n\nClient: {{ $('Classifier Agent').item.json.output.client }}\nDocument: {{ $('Classifier Agent').item.json.output.document }}\nRisk Level: {{ $('Classifier Agent').item.json.output.risk_level }}\nDays Overdue: {{ $('Classifier Agent').item.json.output.days_pending }}\n\nDRAFTED EMAIL:\n{{ $('Email Drafter Agent1').item.json.output }}\n\n---\n✅ APPROVE — send this email to the client:\n{{ $execution.resumeUrl }}?approved=yes\n\n❌ REJECT — discard without sending:\n{{ $execution.resumeUrl }}?approved=no",
+        "message": "=APPROVAL REQUIRED — Audit Email Review\n\nClient: {{ $('Classifier Agent').item.json.output.client }}\nDocument: {{ $('Classifier Agent').item.json.output.document }}\nRisk Level: {{ $('Classifier Agent').item.json.output.risk_level }}\nDays Overdue: {{ $('Classifier Agent').item.json.output.days_pending }}\n\nDRAFTED EMAIL:\n{{ $json.output.properties.body.description }}\n\n---\n✅ APPROVE — send this email to the client:\n{{ $execution.resumeUrl }}?approved=yes\n\n❌ REJECT — discard without sending:\n{{ $execution.resumeUrl }}?approved=no",
         "options": {}
       },
       "type": "n8n-nodes-base.gmail",
       "typeVersion": 2.2,
       "position": [
-        -2528,
-        544
+        -2816,
+        624
       ],
       "id": "198d78bf-bfab-4a30-9925-d612e333d091",
       "name": "Send message and wait for response",
@@ -448,8 +449,8 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2752,
-        608
+        -3008,
+        704
       ],
       "id": "85b656b4-22ae-4b4f-9557-2d4ed82e0e21",
       "name": "Email backup"
@@ -604,8 +605,8 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -1776,
-        544
+        -2048,
+        640
       ],
       "id": "c8c13681-77e1-45e0-b42a-437c7383dea3",
       "name": "Append or update row in sheet",
@@ -628,8 +629,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
       "typeVersion": 1,
       "position": [
-        -3376,
-        1264
+        -3568,
+        1472
       ],
       "id": "5fe346ed-1c3b-4044-8082-3f07223d8420",
       "name": "OpenRouter Chat Model",
@@ -653,8 +654,8 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        -3040,
-        1472
+        -3232,
+        1680
       ],
       "id": "593d4100-522f-4c9a-9a46-aa9846e44ec2",
       "name": "Mistral Cloud Chat Model1",
@@ -678,7 +679,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
       "typeVersion": 1,
       "position": [
-        -3360,
+        -3696,
         656
       ],
       "id": "21fd383d-d12c-4058-976f-5a0ffc4b7fef",
@@ -701,7 +702,7 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
       "typeVersion": 1,
       "position": [
-        -3232,
+        -3568,
         656
       ],
       "id": "afb13dc3-c684-4c66-bd17-a75a534d4647",
@@ -722,8 +723,8 @@
       },
       "type": "n8n-nodes-base.stickyNote",
       "position": [
-        -4880,
-        864
+        -5056,
+        1024
       ],
       "typeVersion": 1,
       "id": "c26d7852-5d65-4b46-8d78-e3fbc5ca4f57",
@@ -739,8 +740,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -4288,
-        496
+        -4448,
+        768
       ],
       "id": "f8d7691d-a0bf-4efc-bb82-e497bdb03b6e",
       "name": "Sticky Note1"
@@ -754,8 +755,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -3504,
-        1024
+        -3712,
+        1184
       ],
       "id": "eed4bac5-1fa5-4fbf-adc8-0d5da23dcde3",
       "name": "Sticky Note2"
@@ -770,8 +771,8 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -3408,
-        416
+        -3680,
+        400
       ],
       "id": "84ccb867-62df-4a4f-86f8-f2c1af6ffe03",
       "name": "Sticky Note3"
@@ -779,15 +780,15 @@
     {
       "parameters": {
         "content": "",
-        "height": 224,
+        "height": 288,
         "width": 720,
         "color": "#FBB36F"
       },
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -2832,
-        528
+        -3072,
+        592
       ],
       "id": "247288f7-efeb-448b-9d12-c0afa73ec217",
       "name": "Sticky Note4"
@@ -802,11 +803,49 @@
       "type": "n8n-nodes-base.stickyNote",
       "typeVersion": 1,
       "position": [
-        -2032,
-        512
+        -2304,
+        592
       ],
       "id": "a1c36e7f-1732-42ef-8a79-c1db29264144",
       "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"subject\": {\n      \"type\": \"string\",\n      \"description\": \"The email subject line\"\n    },\n    \"body\": {\n      \"type\": \"string\",\n      \"description\": \"The full email body as one continuous flowing paragraph. No line breaks.\"\n    }\n  },\n  \"required\": [\"subject\", \"body\"]\n}",
+        "autoFix": true
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -3312,
+        656
+      ],
+      "id": "a68a60c4-7188-4ced-9ea7-53ea9f2b3d1d",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "model": "devstral-medium-latest",
+        "options": {
+          "maxTokens": 1000,
+          "temperature": 0.3,
+          "maxRetries": 2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatMistralCloud",
+      "typeVersion": 1,
+      "position": [
+        -3232,
+        864
+      ],
+      "id": "0fc593f2-1c1c-47b6-bd11-52ddba53df84",
+      "name": "Mistral Cloud Chat Model3",
+      "credentials": {
+        "mistralCloudApi": {
+          "id": "xaqQtmcw1EwDMAsV",
+          "name": "Mistral Cloud account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -1074,6 +1113,28 @@
       "main": [
         []
       ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Email Drafter Agent1",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mistral Cloud Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Structured Output Parser1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
@@ -1085,7 +1146,7 @@
     "callerPolicy": "workflowsFromSameOwner",
     "availableInMCP": false
   },
-  "versionId": "9d79f4e7-32c3-4fe9-8681-670335bf3b43",
+  "versionId": "56b772ac-588c-46fb-a45f-68c46ee83285",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "975f78da46fcb2adb6a4361b0f4c48590317b39d5cfa9e6048547f53814bbbc6"
